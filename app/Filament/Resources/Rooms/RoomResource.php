@@ -10,11 +10,13 @@ use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
+use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
@@ -30,14 +32,12 @@ class RoomResource extends Resource
     {
         return $schema
             ->components([
-                TextInput::make('roomtype_id')
-                    ->required()
-                    ->numeric(),
+                Select::make('roomtype_id')
+                    ->relationship('roomtype', 'name')
+                    ->native(false)
+                    ->required(),
                 TextInput::make('room_number')
                     ->required(),
-                TextInput::make('status')
-                    ->required()
-                    ->default('available'),
             ]);
     }
 
@@ -45,8 +45,7 @@ class RoomResource extends Resource
     {
         return $schema
             ->components([
-                TextEntry::make('roomtype_id')
-                    ->numeric(),
+                TextEntry::make('roomtype.name'),
                 TextEntry::make('room_number'),
                 TextEntry::make('status'),
                 TextEntry::make('created_at')
@@ -63,12 +62,16 @@ class RoomResource extends Resource
         return $table
             ->recordTitleAttribute('Room')
             ->columns([
-                TextColumn::make('roomtype_id')
-                    ->numeric()
-                    ->sortable(),
                 TextColumn::make('room_number')
                     ->searchable(),
-                TextColumn::make('status')
+                TextColumn::make('roomtype.name'),
+                SelectColumn::make('status')
+                    ->options([
+                        'available' => 'Available',
+                        'occupied' => 'Occupied',
+                        'maintenance' => 'Maintenance',
+                    ])
+                    ->native(false)
                     ->searchable(),
                 TextColumn::make('created_at')
                     ->dateTime()
@@ -78,7 +81,7 @@ class RoomResource extends Resource
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-            ])
+            ])->defaultPaginationPageOption(5)
             ->filters([
                 //
             ])

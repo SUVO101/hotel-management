@@ -11,7 +11,7 @@ class Gallery extends Model
         'roomtype_id',
     ];
 
-    public function roomtypes()
+    public function roomtype()
     {
         return $this->belongsTo(Roomtype::class);
     }

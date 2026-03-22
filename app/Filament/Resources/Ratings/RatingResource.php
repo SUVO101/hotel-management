@@ -10,15 +10,18 @@ use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Resource;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
 
 class RatingResource extends Resource
@@ -38,9 +41,7 @@ class RatingResource extends Resource
                 TextInput::make('rating')
                     ->required()
                     ->numeric(),
-                TextInput::make('review'),
-                Toggle::make('is_approved')
-                    ->required(),
+                Textarea::make('review'),
             ]);
     }
 
@@ -48,20 +49,27 @@ class RatingResource extends Resource
     {
         return $schema
             ->components([
-                TextEntry::make('name'),
-                TextEntry::make('rating')
-                    ->numeric(),
+
+                Section::make()->components([
+TextEntry::make('name')->hiddenLabel(),
                 TextEntry::make('review')
-                    ->placeholder('-'),
-                IconEntry::make('is_approved')
-                    ->boolean(),
-                TextEntry::make('created_at')
-                    ->dateTime()
-                    ->placeholder('-'),
-                TextEntry::make('updated_at')
-                    ->dateTime()
-                    ->placeholder('-'),
-            ]);
+                    ->placeholder('-')->hiddenLabel(),
+                    TextEntry::make('rating')
+                    ->numeric()
+                    ->formatStateUsing(fn ($state) => str_repeat('⭐', $state))->hiddenLabel(),
+                ])->columnSpan(2),
+                Section::make()->components([
+                    IconEntry::make('is_approved')
+                        ->boolean(),
+                    TextEntry::make('created_at')
+                        ->since()
+                        ->placeholder('-'),
+                    TextEntry::make('updated_at')
+                        ->since()
+                        ->placeholder('-'),
+                ])->columnSpan(1),
+                
+            ])->columns(3);
     }
 
     public static function table(Table $table): Table
@@ -73,11 +81,10 @@ class RatingResource extends Resource
                     ->searchable(),
                 TextColumn::make('rating')
                     ->numeric()
+                    ->formatStateUsing(fn ($state) => str_repeat('⭐', $state))
                     ->sortable(),
-                TextColumn::make('review')
-                    ->searchable(),
-                IconColumn::make('is_approved')
-                    ->boolean(),
+                TextColumn::make('review')->words(3),
+                ToggleColumn::make('is_approved'),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -99,7 +106,7 @@ class RatingResource extends Resource
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])->defaultPaginationPageOption(5)->defaultSort('created_at','desc');
     }
 
     public static function getPages(): array

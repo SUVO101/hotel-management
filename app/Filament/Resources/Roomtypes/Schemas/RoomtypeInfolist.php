@@ -15,90 +15,105 @@ class RoomtypeInfolist
         return $schema
             ->components([
                 // 🔹 LEFT SIDE (Main Info)
-        Section::make('Room Info')
-            ->schema([
-                
+                Section::make('Room Info')
+                    ->schema([
 
-            Section::make('Details')
-            ->schema([
-                Section::make('Room Types')
-            ->schema([
-                TextEntry::make('name')
-                ->hiddenLabel()
-                    ->weight('bold'),
 
-                ImageEntry::make('cover_image')
-                ->hiddenLabel()
-                    ->height(150)
-                    ->placeholder('-'),
+                        Section::make('Details')
+                            ->schema([
 
-                TextEntry::make('price_per_room')
-                ->hiddenLabel()
-                ->prefix('₹')
-                    ->numeric(),
+                                Section::make('Room Types')
+                                    ->schema([
+                                        TextEntry::make('name')
+                                            ->hiddenLabel()
+                                            ->weight('bold'),
 
-                TextEntry::make('facilities.name') // relation show
-                    ->badge()
-                    ->label('Facilities')
-                    ->color('success')
-                    ->separator(', '),
-            ])->columnSpan(2),
+                                        ImageEntry::make('cover_image')
+                                            ->hiddenLabel()
+                                            ->height(150)
+                                            ->placeholder('-'),
 
-                    // 🔹 META INFO
-        Section::make('Other Info')
-            ->schema([
-                IconEntry::make('is_active')
-                    ->boolean(),
+                                        TextEntry::make('price_per_room')
+                                            ->hiddenLabel()
+                                            ->prefix('₹')
+                                            ->numeric(),
+                                    ])->columnSpan(2),
 
-                TextEntry::make('created_at')
-                    ->dateTime()
-                    ->placeholder('-'),
+                                    Section::make('Facilities')
+                                    ->schema([
+                                        TextEntry::make('facilities.name') // relation show
+                                            ->badge()
+                                            ->hiddenLabel()
+                                            ->color('success')
+                                            ->separator(', '),
 
-                TextEntry::make('updated_at')
-                    ->dateTime()
-                    ->placeholder('-'),
-            ])
-            ->columns(1)->columnSpan(1),
-            ])->columns(3),
+                                    ])->columnSpan(1),
 
-            
-            Section::make('Description')
-            ->schema([  
+                                     Section::make('Room No')
+                                    ->schema([
+                                        TextEntry::make('rooms.room_number') // relation show
+                                            ->badge()
+                                            ->hiddenLabel()
+                                            ->color('success')
+                                            ->separator(', '),
 
-                 TextEntry::make('description')
-                 ->hiddenLabel()
-                    ->placeholder('-')
-                    ->markdown()
+                                    ])->columnSpan(1),
+
+                            ])->columns(4),
+
+
+                        Section::make('Description')
+                            ->schema([
+
+                                TextEntry::make('description')
+                                    ->hiddenLabel()
+                                    ->placeholder('-')
+                                    ->markdown()
+                                    ->columnSpanFull(),
+                            ]),
+
+
+                        Section::make('Terms and Conditions')
+                            ->schema([
+
+                                TextEntry::make('terms_and_conditions')
+                                    ->hiddenLabel()
+                                    ->placeholder('-')
+                                    ->markdown()
+                                    ->columnSpanFull(),
+                            ]),
+
+
+                    ])->columnSpanFull(),
+
+                // 🔹 RIGHT SIDE (Side Info)
+
+
+                // 🔹 GALLERY (BOTTOM FULL WIDTH)
+                Section::make('Gallery')
+                    ->schema([
+                        ImageEntry::make('galleries.image')
+                            ->label('Images')
+                            ->columnSpanFull(),
+                    ])
                     ->columnSpanFull(),
-            ]),           
+
+                Section::make('Other Info')
+                                    ->schema([
+                                        IconEntry::make('is_active')
+                                            ->boolean(),
+
+                                        TextEntry::make('created_at')
+                                            ->since()
+                                            ->placeholder('-'),
+
+                                        TextEntry::make('updated_at')
+                                            ->since()
+                                            ->placeholder('-'),
+                                    ])
+                                    ->columnSpanFull()->columns(3),
 
 
-Section::make('Terms and Conditions')
-            ->schema([  
-
-                 TextEntry::make('terms_and_conditions')
-                 ->hiddenLabel()
-                    ->placeholder('-')
-                    ->markdown()
-                    ->columnSpanFull(),
-            ]),
-
-                    
-            ])->columnSpanFull(),
-
-        // 🔹 RIGHT SIDE (Side Info)
-        
-
-        // 🔹 GALLERY (BOTTOM FULL WIDTH)
-        Section::make('Gallery')
-            ->schema([
-                ImageEntry::make('galleries.image')
-                    ->label('Images')
-                    ->columnSpanFull(),
-            ])
-            ->columnSpanFull(),
-
-        
             ])->columns(3);
     }
 }

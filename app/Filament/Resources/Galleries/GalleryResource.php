@@ -15,6 +15,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Resource;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\ImageColumn;
@@ -46,15 +47,17 @@ class GalleryResource extends Resource
     {
         return $schema
             ->components([
-                TextEntry::make('roomtype_id')
-                    ->numeric(),
-                ImageEntry::make('image'),
-                TextEntry::make('created_at')
-                    ->dateTime()
-                    ->placeholder('-'),
-                TextEntry::make('updated_at')
-                    ->dateTime()
-                    ->placeholder('-'),
+                Section::make()
+                ->schema([
+                    ImageEntry::make('image')->height(200)->hiddenLabel(),
+                    TextEntry::make('created_at')
+                        ->since()
+                        ->placeholder('-'),
+                    TextEntry::make('roomtype.name')->hiddenLabel(),
+                    TextEntry::make('updated_at')
+                        ->since()
+                        ->placeholder('-'),
+                ])->columns(2)->columnSpanFull(),
             ]);
     }
 
@@ -63,9 +66,6 @@ class GalleryResource extends Resource
         return $table
             ->recordTitleAttribute('Gallery')
             ->columns([
-                TextColumn::make('roomtype_id')
-                    ->numeric()
-                    ->sortable(),
                 ImageColumn::make('image'),
                 TextColumn::make('created_at')
                     ->dateTime()
@@ -88,7 +88,7 @@ class GalleryResource extends Resource
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])->defaultPaginationPageOption(5);
     }
 
     public static function getPages(): array

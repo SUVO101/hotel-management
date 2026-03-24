@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Enqueries\Schemas;
 
 use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Schemas\Schema;
@@ -30,9 +31,10 @@ class EnqueryForm
                     ->required(),
                 DateTimePicker::make('checkout_date')
                     ->required(),
-                TextInput::make('roomtype_id')
-                    ->required()
-                    ->numeric(),
+                Select::make('roomtype_id')
+                ->relationship('roomtype','name')
+                ->native(false)
+                    ->required(),
                 TextInput::make('number_of_rooms')
                     ->required()
                     ->numeric()

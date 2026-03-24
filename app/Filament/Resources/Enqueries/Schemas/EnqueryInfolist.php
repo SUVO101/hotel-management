@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Enqueries\Schemas;
 
 use Filament\Infolists\Components\TextEntry;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 
 class EnqueryInfolist
@@ -11,33 +12,68 @@ class EnqueryInfolist
     {
         return $schema
             ->components([
-                TextEntry::make('name'),
+                 // 🔹 CUSTOMER INFO
+        Section::make('Customer Info')
+            ->schema([
+                TextEntry::make('name')
+                    ->weight('bold'),
+
                 TextEntry::make('email')
-                    ->label('Email address'),
+                    ->label('Email'),
+
                 TextEntry::make('phone'),
-                TextEntry::make('address'),
+
+                TextEntry::make('address')->columnSpanFull(),
+
                 TextEntry::make('message')
                     ->placeholder('-')
                     ->columnSpanFull(),
+            ])
+            ->columns(3)
+            ->columnSpan(2),
+
+        // 🔹 BOOKING DETAILS
+        Section::make('Booking Details')
+            ->schema([
                 TextEntry::make('checkin_date')
+                    ->label('Check-in')
                     ->dateTime(),
+
                 TextEntry::make('checkout_date')
+                    ->label('Check-out')
                     ->dateTime(),
-                TextEntry::make('roomtype_id')
-                    ->numeric(),
+
+                TextEntry::make('roomtype.name') // 👈 relation show
+                    ->label('Room Type'),
+
                 TextEntry::make('number_of_rooms')
-                    ->numeric(),
+                    ->label('Rooms'),
+
                 TextEntry::make('number_of_adults')
-                    ->numeric(),
+                    ->label('Adults'),
+
                 TextEntry::make('number_of_children')
-                    ->numeric(),
-                TextEntry::make('status'),
+                    ->label('Children'),
+            ])
+            ->columns(2)
+            ->columnSpan(2),
+
+        // 🔹 STATUS + META
+        Section::make('Status & Info')
+            ->schema([
+                TextEntry::make('status')
+                    ->badge(),
+
                 TextEntry::make('created_at')
                     ->dateTime()
                     ->placeholder('-'),
+
                 TextEntry::make('updated_at')
                     ->dateTime()
                     ->placeholder('-'),
-            ]);
+            ])
+            ->columns(3)
+            ->columnSpanFull(),
+            ])->columns(4);
     }
 }

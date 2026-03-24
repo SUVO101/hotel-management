@@ -12,7 +12,7 @@ class Companyprofile extends Model
     'phone2',
     'email',
     'logo',
-    'favicon',
+    'fav_icon',
     'gst_number',
     'location',
     'fb_link',

@@ -86,11 +86,11 @@ TextEntry::make('name')->hiddenLabel(),
                 TextColumn::make('review')->words(3),
                 ToggleColumn::make('is_approved'),
                 TextColumn::make('created_at')
-                    ->dateTime()
+                    ->since()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
-                    ->dateTime()
+                    ->since()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])

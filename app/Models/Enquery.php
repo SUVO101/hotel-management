@@ -25,6 +25,10 @@ class Enquery extends Model
     {
         return $this->belongsTo(Roomtype::class);
     }
+    public function booking()
+    {
+        return $this->hasOne(Booking::class);
+    }
 
     // public function user()
     // {

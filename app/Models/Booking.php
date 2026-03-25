@@ -18,13 +18,23 @@ class Booking extends Model
         'status',
     ];
 
-    public function roomtype()
-    {
-        return $this->belongsTo(Roomtype::class);
-    }
+    // --off kore diyechi
+    // public function roomtype()
+    // {
+    //     return $this->belongsTo(Roomtype::class);
+    // }
 
     // public function user()
     // {
     //     return $this->belongsTo(User::class);
     // }
+    public function enquery()
+    {
+        return $this->belongsTo(Enquery::class);
+    }
+    public function rooms()
+{
+    return $this->belongsToMany(Room::class);
+}
+
 }

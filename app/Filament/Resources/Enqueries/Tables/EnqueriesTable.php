@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Enqueries\Tables;
 
+use App\Models\Booking;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
@@ -76,6 +77,29 @@ class EnqueriesTable
                         'cancelled' => 'Cancelled',
                     ])
                     ->native(false)
+                    ->afterStateUpdated(function ($record, $state) {
+                        // 👉 only when booked
+                        if ($state === 'booked') {
+                            $checkin = Carbon::parse($record->checkin_date);
+                            $checkout = Carbon::parse($record->checkout_date);
+
+                            // 👉 total days
+                            $days = $checkin->diffInDays($checkout);
+
+                            // 👉 room price
+                            $price = $record->roomtype->price_per_room;
+
+                            // 👉 total amount
+                            $total = $price * $days;
+
+                            Booking::create([
+                                'enquery_id' => $record->id,
+                                'checkin_date' => $record->checkin_date,
+                                'checkout_date' => $record->checkout_date,
+                                'total_amount' => number_format($total, 2),
+                            ]);
+                        }
+                    })
                     ->searchable(),
                 TextColumn::make('created_at')
                     ->dateTime()

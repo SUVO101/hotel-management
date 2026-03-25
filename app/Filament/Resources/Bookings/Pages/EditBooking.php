@@ -18,4 +18,10 @@ class EditBooking extends EditRecord
             DeleteAction::make(),
         ];
     }
+    protected function afterSave(): void
+    {
+        foreach ($this->record->rooms as $room) {
+            $room->update(['status' => 'occupied']);
+        }
+    }
 }

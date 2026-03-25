@@ -20,7 +20,7 @@ class EnqueryResource extends Resource
 {
     protected static ?string $model = Enquery::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-envelope-open';
 
     protected static ?string $recordTitleAttribute = 'Enquery';
 

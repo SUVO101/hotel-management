@@ -49,6 +49,17 @@ class BookingsTable
                 ToggleColumn::make('is_checkin')
                     ->label('Check-In'),
                 ToggleColumn::make('is_checkout')
+                ->afterStateUpdated(function ($state,$record) {
+                    //dd($state,$record->rooms);
+                    // ✅ 1. Room status free
+                    if($state){
+                        foreach ($record->rooms as $room) {
+                            $room->update(['status' => 'available']);
+                        }
+                        // ✅ 2. Pivot table delete
+                        $record->rooms()->detach();
+                    }
+                })
                     ->label('Check-Out'),
                 SelectColumn::make('status')
                     ->options([

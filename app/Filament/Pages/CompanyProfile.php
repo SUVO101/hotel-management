@@ -19,6 +19,7 @@ class CompanyProfile extends Page implements HasForms
 {
     use InteractsWithForms;
     protected string $view = 'filament.pages.company-profile';
+    protected static bool $shouldRegisterNavigation = false;
     public ?array $data = [];
 
     public function mount(): void

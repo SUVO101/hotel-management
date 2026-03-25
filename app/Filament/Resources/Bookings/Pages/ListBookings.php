@@ -16,4 +16,11 @@ class ListBookings extends ListRecords
             CreateAction::make(),
         ];
     }
+     protected function afterSave(): void
+    {
+        // foreach ($this->record->rooms as $room) {
+        //     $room->update(['status' => 'occupied']);
+        // }
+        dd($this->record);
+    }
 }

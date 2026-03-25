@@ -21,12 +21,16 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class GalleryResource extends Resource
 {
     protected static ?string $model = Gallery::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-photo';
+
+    protected static UnitEnum|string|null $navigationGroup = 'Room Management';
+    protected static ?int $navigationSort = 3;
 
     protected static ?string $recordTitleAttribute = 'Gallery';
 

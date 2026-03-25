@@ -15,12 +15,15 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class RoomtypeResource extends Resource
 {
     protected static ?string $model = Roomtype::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-building-office';
+    protected static UnitEnum|string|null $navigationGroup = 'Room Management';
+    protected static ?int $navigationSort =2;
 
     protected static ?string $recordTitleAttribute = 'Room Types';
 
